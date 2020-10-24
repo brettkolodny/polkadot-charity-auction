@@ -7,7 +7,7 @@ finalOutput/*.js
 /lib/ocaml/
 *.log
 .bsb.lock
-/src/*.js
+/src/*.bs.js
 _esy
 _build
 *.install

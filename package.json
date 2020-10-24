@@ -1,5 +1,5 @@
 {
-  "name": "reason-react-website",
+  "name": "polkadot-charity-raffle",
   "version": "0.1.0",
   "scripts": {
     "re:build": "bsb -make-world",
@@ -21,6 +21,9 @@
     "parcel-bundler": "^1.12.4"
   },
   "dependencies": {
+    "@polkadot/api": "^2.3.1",
+    "@polkadot/api-contract": "^2.3.1",
+    "@polkadot/extension-dapp": "^0.34.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "reason-react": "0.9.1"
