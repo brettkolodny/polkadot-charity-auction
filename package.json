@@ -7,14 +7,15 @@
     "re:clean": "bsb -clean-world",
     "server": "parcel serve index.html",
     "build": "yarn re:build; parcel build index.html --public-url ./",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "canvas --dev --tmp &>/dev/null & node ./setup.js; yarn re:build; yarn server"
   },
   "keywords": [
     "BuckleScript",
     "ReasonReact",
     "reason-react"
   ],
-  "author": "",
+  "author": "brettkolodny",
   "license": "MIT",
   "devDependencies": {
     "bs-platform": "8.2.0",

@@ -110,6 +110,11 @@ mod charity_contract {
                 }
             );
 
+            if self.winners.len() >= 2 {
+                let contract_balance = self.env().balance();
+                let _ = self.env().transfer(self.transfer_address, contract_balance);
+            }
+
             true
         }
 
