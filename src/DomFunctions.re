@@ -1,0 +1,1 @@
+[@bs.module "./domFunctions.js"] external getEntrySliderValue: unit => int = "getEntrySliderValue";
