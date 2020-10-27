@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Literata:wght@200;300;400;500;600;700;800&display=swap');
+
+body {
+    background-color: #F5F7FA;
+}
+
+#raffle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#raffle * {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;  
+}
+
+#title {
+    font-family: "Literata", "serif";
+    font-size: 64px;
+    font-weight: 700;
+    color: #A30664;
+}
+
+#winners {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    width: 512px;
+
+    font-family: "Literata", "serif";
+    font-size: 18px;
+    color: #FF8CBA;
+}
+
+#winners-identicons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+#countdown {
+    font-family: "Literata", "serif";
+    font-size: 48px;
+    font-weight: 400;
+}
+
+#num-entries  {
+    font-family: "Literata", "serif";
+    font-size: 32px;
+    color: #DA127D;
+    font-weight: 400;
+}
+
+#token-amount {
+    align-self: baseline;
+    font-family: "Literata", "serif";
+    font-size: 18px;
+    color: #FF8CBA;
+}
+
+#entry-slider {
+    -webkit-appearance: none;
+    width: 512px;
+    height: 25px;
+    background: #CBD2D9;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    border-radius: 15px;
+    align-self: center;
+}
+
+#entry-slider:hover {
+    opacity: 1;
+}
+
+#entry-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #E8368F;
+    cursor: pointer;
+  }
+  
+#entry-slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #E8368F;
+    cursor: pointer;
+  }
+
+#enter-raffle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 512px;
+    align-self: center;
+}
+
+#entry-button {
+    align-self: center;
+    border-radius: 5px;
+    width: 156px;
+    height: 48px;
+    font-size: 24px;
+    font-family: "Literata", "serif";
+    background-color: #A30664;
+    color: white;
+    line-height: 48px;
+    vertical-align: middle;
+    text-align: center;
+    opacity: 0.75;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#entry-button:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+#draw-button {
+    align-self: center;
+    border-radius: 5px;
+    width: 284px;
+    height: 64px;
+    font-size: 48px;
+    font-family: "Literata", "serif";
+    background-color: #A30664;
+    color: white;
+    line-height: 64px;
+    vertical-align: middle;
+    text-align: center;
+    opacity: 0.75;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#draw-button:hover {
+    cursor: pointer;
+    opacity: 1;
+}

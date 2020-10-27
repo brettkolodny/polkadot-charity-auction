@@ -79,6 +79,26 @@ async function getDrawCountdown(api) {
   return callValue.output.toHuman();
 }
 
+async function getDrawCountdownSubscription(api, setFunction) {
+  const contract = new ContractPromise(api, abi, contractAddress);
+
+  const address = await getInjectedAccount().address;
+
+  let currentCountdown = null;
+
+  const unsub = await api.query.contracts.contractInfoOf(contractAddress, async () => {
+    const callValue = await contract.query.getDrawCountdown(address, 0, gasLimit);
+
+    if (callValue.output.toHuman() != currentCountdown) {
+      currentCountdown = callValue.output.value;
+      console.log(currentCountdown);
+      setFunction(currentCountdown / 1000);
+    }
+  });
+
+  return unsub;
+}
+
 async function getWinners(api) {
   const contract = new ContractPromise(api, abi, contractAddress);
 
@@ -86,12 +106,8 @@ async function getWinners(api) {
 
   const callValue = await contract.query.getWinners(address, 0, gasLimit);
 
-  console.log(callValue.output[0].toHuman(), callValue.output[1].toHuman());
-
-  console.log(callValue.output.toHuman());
-
-  const winner1 = callValue.output[0].toHuman() == "null" ? callValue.output[0].toHuman() : "No winner yet";
-  const winner2 = callValue.output[1].toHuman() == "null" ? callValue.output[1].toHuman() : "No winner yet";
+  const winner1 = callValue.output[0].toHex() == "null" ? callValue.output[0].toHex() : "No winner yet";
+  const winner2 = callValue.output[1].toHex() == "null" ? callValue.output[1].toHex() : "No winner yet";
 
   return [winner1, winner2]
 }
@@ -106,8 +122,8 @@ async function getWinnersSubscription(api, setFunction) {
   const unsub = api.query.contracts.contractInfoOf(contractAddress, async (_) => {
     const callValue = await contract.query.getWinners(address, 0, gasLimit);
 
-    const winner1 = callValue.output[0].toHuman() == "null" ? callValue.output[0].toHuman() : "No winner yet";
-    const winner2 = callValue.output[1].toHuman() == "null" ? callValue.output[1].toHuman() : "No winner yet";
+    const winner1 = callValue.output[0].toHuman() != null ? callValue.output[0].toHex() : "null";
+    const winner2 = callValue.output[1].toHuman() != null ? callValue.output[1].toHex() : "null";
 
     const winners = [winner1, winner2];
 
@@ -121,7 +137,6 @@ async function getWinnersSubscription(api, setFunction) {
 }
 
 async function numEntries(api) {
-  console.log(await api.query.contracts.contractInfoOf(contractAddress));
   const contract = new ContractPromise(api, abi, contractAddress);
 
   const address = await getInjectedAccount().address;
@@ -185,6 +200,7 @@ export {
   connect, 
   enterRaffle, 
   getDrawCountdown, 
+  getDrawCountdownSubscription,
   getWinners, 
   getWinnersSubscription,
   numEntries, 

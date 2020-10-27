@@ -18,8 +18,16 @@ let make = () => {
     switch (api) {
     | Some(a) => {
         <div id="raffle">
+            <div id="title">
+                {React.string("Charrity Raffle!")}
+            </div>
+
             <Winners api=a />
+            
+            <Countdown api=a />
+
             <Entries api=a />
+
             <EnterRaffle api=a />
         </div>
     }

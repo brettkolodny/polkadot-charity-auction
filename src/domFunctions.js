@@ -1,5 +1,5 @@
 function getEntrySliderValue() {
-    const slider = document.getElementById("entrySlider");
+    const slider = document.getElementById("entry-slider");
 
     return slider.value;
 }

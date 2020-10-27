@@ -10,6 +10,7 @@ mod charity_contract {
     const ZERO_POINT_ONE_UNIT: Balance = 100000000000000;
     const ZERO_POINT_ZERO_ONE_UNIT: Balance = 10000000000000;
     const FIFTEEN_MINUTES: u64 = 900000;
+    const ENTRIES_REQUIRED_FOR_DRAW: u32 = 5;
 
     #[ink(event)]
     pub struct RaffleEntry {
@@ -24,14 +25,14 @@ mod charity_contract {
     }
 
     #[ink(storage)]
-    pub struct CharityContract {
+    pub struct CharityRaffle {
         transfer_address: AccountId,
         entries: ink_storage::collections::Vec<AccountId>,
         winners: ink_storage::collections::Vec<AccountId>,
         draw_countdown: Option<Timestamp>,
     }
 
-    impl CharityContract {
+    impl CharityRaffle {
         #[ink(constructor)]
         pub fn new(transfer_address: AccountId) -> Self {
             let entries = ink_storage::collections::Vec::new();
@@ -63,7 +64,7 @@ mod charity_contract {
             if !self.already_entered(&caller) {
                 self.entries.push(caller);
 
-                if self.entries.len() >= 1 {
+                if self.entries.len() >= ENTRIES_REQUIRED_FOR_DRAW {
                     if let None = self.draw_countdown {
                         self.draw_countdown = Some(self.env().block_timestamp());
                     }
@@ -98,7 +99,7 @@ mod charity_contract {
                 None => return false,
             }
 
-            if !self.already_entered(&caller) || self.winners.len() >= 2 || self.already_won(&caller) {
+            if !self.already_entered(&caller) || self.winners.len() > 2 || self.already_won(&caller) {
                 return false;
             }
 
@@ -151,7 +152,19 @@ mod charity_contract {
 
         #[ink(message)]
         pub fn get_draw_countdown(&self) -> Option<u64> {
-            self.draw_countdown
+            if let Some(t) = self.draw_countdown {
+                let current_block_timestamp = self.env().block_timestamp();
+
+                let time_left = FIFTEEN_MINUTES.checked_sub(current_block_timestamp - t);
+
+                if let Some(v) = time_left {
+                    Some(v)
+                } else {
+                    Some(0)
+                }
+            } else {
+                None
+            }
         }
 
         fn already_entered(&self, account: &AccountId) -> bool {

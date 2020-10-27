@@ -11,7 +11,7 @@ let make = (~api: DApp.Api.t) => {
     switch (entries) {
     | Some(ne) => {
         if (int_of_string(ne) < 5) {
-            <div id="num-entires">{React.string(ne ++ "/5 Entries")}</div>
+            <div id="num-entries">{React.string(ne ++ "/5 Entries needed")}</div>
         } else {
             <div id="num-entries">{React.string(ne ++ " Entries")}</div>
         }
