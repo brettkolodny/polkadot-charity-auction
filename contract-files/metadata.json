@@ -1,7 +1,7 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0x74b3dc9304540dc6c7c0c8ec907612c859c0278edf01aeae2566d6675ef9c148",
+    "hash": "0x3ac885e0356f04bba50b1175d749c33b773833e07470c8cd80490c5966e4a90b",
     "language": "ink! 3.0.0-rc2",
     "compiler": "rustc 1.49.0-nightly"
   },
@@ -70,35 +70,28 @@
         "name": "RaffleWinner"
       },
       {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "winner1",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 1
-            }
-          },
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "winner2",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 1
-            }
-          }
-        ],
+        "args": [],
         "docs": [],
         "name": "RaffleOver"
       }
     ],
     "messages": [
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_balance"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Balance"
+          ],
+          "type": 6
+        },
+        "selector": "0x03e63792"
+      },
       {
         "args": [],
         "docs": [],

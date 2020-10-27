@@ -71,8 +71,7 @@ async function initiateContract(api, blueprint, pair) {
     const keyring = new Keyring({ type: 'sr25519' });
 
     const eveAddress = keyring.createFromUri("//Eve").address;
-    console.log(eveAddress);
-
+    
     const unsub = await blueprint.tx
         .new(endowment, gasLimit, eveAddress)
         .signAndSend(pair, async ({ isError, contract, status, events, dispatchError }) => {

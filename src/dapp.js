@@ -30,7 +30,7 @@ async function connect() {
 }
 
 async function getInjectedAccount() {
-  const allInjected = await web3Enable('my cool dapp');
+  const allInjected = await web3Enable("Charity Raffle");
 
   const allAccounts = await web3Accounts();
 

@@ -14,7 +14,7 @@ let make = (~api: DApp.Api.t) => {
                     Js.log(winner1);
                     Js.log(winner2);
                     <div id="winners">
-                        {React.string("Winners:")}
+                        {React.string("Winners: Raffle Over!")}
                         <div id="winners-identicons">
                             <Indenticon value=winner1 size=64 theme="polkadot" />
                             <Indenticon value=winner2 size=64 theme="polkadot" />
