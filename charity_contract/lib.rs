@@ -4,13 +4,11 @@ use ink_lang as ink;
 
 #[ink::contract]
 mod charity_contract {
-    // extern crate rand;
-    // use rand::{Rng, SeedableRng};
-
     const ZERO_POINT_ONE_UNIT: Balance = 100000000000000;
     const ZERO_POINT_ZERO_ONE_UNIT: Balance = 10000000000000;
     const FIFTEEN_MINUTES: u64 = 900000;
     const ENTRIES_REQUIRED_FOR_DRAW: u32 = 5;
+    const NUM_WINNERS: u32 = 2;
 
     #[ink(event)]
     pub struct RaffleEntry {
@@ -24,12 +22,16 @@ mod charity_contract {
         winner: AccountId
     }
 
+    #[ink(event)]
+    pub struct RaffleOver;
+
     #[ink(storage)]
     pub struct CharityRaffle {
         transfer_address: AccountId,
         entries: ink_storage::collections::Vec<AccountId>,
         winners: ink_storage::collections::Vec<AccountId>,
         draw_countdown: Option<Timestamp>,
+        balance: Balance,
     }
 
     impl CharityRaffle {
@@ -43,7 +45,13 @@ mod charity_contract {
                 entries,
                 winners,
                 draw_countdown: None,
+                balance: 0,
             }
+        }
+
+        #[ink(message)]
+        pub fn get_balance(&self) -> Balance {
+            self.balance
         }
 
         #[ink(message, payable)]
@@ -51,13 +59,13 @@ mod charity_contract {
             let caller = self.env().caller();
             let transfered_amount = self.env().transferred_balance();
 
-            if self.winners.len() > 2 {
-                let _ = self.env().transfer(caller, transfered_amount);
+            if self.winners.len() >= NUM_WINNERS {
+                self.env().transfer(caller, transfered_amount).unwrap();
                 return false;
             }
 
             if transfered_amount > ZERO_POINT_ONE_UNIT || transfered_amount < ZERO_POINT_ZERO_ONE_UNIT {
-                let _ = self.env().transfer(caller, transfered_amount);
+                self.env().transfer(caller, transfered_amount).unwrap();
                 return false;
             }
 
@@ -76,9 +84,11 @@ mod charity_contract {
                     }
                 );
 
+                self.balance += transfered_amount;
+
                 return true;
             } else {
-                let _ = self.env().transfer(caller, transfered_amount);
+                self.env().transfer(caller, transfered_amount).unwrap();
             }
             
             false
@@ -86,8 +96,6 @@ mod charity_contract {
 
         #[ink(message)]
         pub fn draw(&mut self) -> bool {
-            let caller = self.env().caller();
-
             match self.draw_countdown {
                 Some(t) => {
                     let current_block_timestamp = self.env().block_timestamp();
@@ -99,21 +107,31 @@ mod charity_contract {
                 None => return false,
             }
 
-            if !self.already_entered(&caller) || self.winners.len() > 2 || self.already_won(&caller) {
+            if self.winners.len() >= NUM_WINNERS {
                 return false;
             }
 
-            self.winners.push(caller);
+            let eligible_winners = self.get_eligible_winners();
+
+            let random_index = Self::get_random_number() % eligible_winners.len();
+
+            let winner = eligible_winners.get(random_index).unwrap();
+
+            self.winners.push(*winner);
 
             self.env().emit_event(
                 RaffleWinner {
-                    winner: caller
+                    winner: *winner
                 }
             );
 
-            if self.winners.len() >= 2 {
-                let contract_balance = self.env().balance();
-                let _ = self.env().transfer(self.transfer_address, contract_balance);
+            if self.winners.len() >= NUM_WINNERS {
+                self.env().transfer(self.transfer_address, self.balance).unwrap();
+                self.balance = 0;
+
+                self.env().emit_event(
+                    RaffleOver {}
+                );
             }
 
             true
@@ -189,6 +207,32 @@ mod charity_contract {
             }
 
             false
+        }
+
+        fn get_eligible_winners(&self) -> ink_storage::Vec<AccountId> {
+            let mut eligible = ink_storage::Vec::<AccountId>::new();
+
+            for entry in self.entries.iter() {
+                if !self.already_won(entry) {
+                    eligible.push(*entry);
+                }
+            }
+
+            eligible
+        }
+
+        // Thank you to @LaurentTrk#4763 on discord for the following two functions
+        fn get_random_number() -> u32 {
+            let seed: [u8; 8] = [22, 102, 104, 141, 55, 71, 89, 88];
+            let random_hash = Self::env().random(&seed);
+            Self::as_u32_be(&random_hash.as_ref())
+        }
+
+        fn as_u32_be(array: &[u8]) -> u32 {
+            ((array[0] as u32) << 24) +
+                ((array[1] as u32) << 16) +
+                ((array[2] as u32) << 8) +
+                ((array[3] as u32) << 0)
         }
     }
 }

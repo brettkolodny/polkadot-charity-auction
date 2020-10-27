@@ -19,7 +19,7 @@ let make = () => {
     | Some(a) => {
         <div id="raffle">
             <div id="title">
-                {React.string("Charrity Raffle!")}
+                {React.string("Charity Raffle!")}
             </div>
 
             <Winners api=a />

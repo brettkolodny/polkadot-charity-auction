@@ -1,7 +1,7 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0x901f1ab8ebd86295ff9f29fde7f35a013eb9f17a4fb05c1c344464d7d849416f",
+    "hash": "0x74b3dc9304540dc6c7c0c8ec907612c859c0278edf01aeae2566d6675ef9c148",
     "language": "ink! 3.0.0-rc2",
     "compiler": "rustc 1.49.0-nightly"
   },
@@ -68,6 +68,34 @@
         ],
         "docs": [],
         "name": "RaffleWinner"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": true,
+            "name": "winner1",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "docs": [],
+            "indexed": true,
+            "name": "winner2",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          }
+        ],
+        "docs": [],
+        "name": "RaffleOver"
       }
     ],
     "messages": [
@@ -83,7 +111,7 @@
           "displayName": [
             "bool"
           ],
-          "type": 6
+          "type": 7
         },
         "selector": "0x3b83ee55"
       },
@@ -99,7 +127,7 @@
           "displayName": [
             "bool"
           ],
-          "type": 6
+          "type": 7
         },
         "selector": "0x39f673d5"
       },
@@ -113,7 +141,7 @@
         "payable": false,
         "returnType": {
           "displayName": [],
-          "type": 7
+          "type": 8
         },
         "selector": "0x9299db13"
       },
@@ -161,7 +189,7 @@
           "displayName": [
             "Option"
           ],
-          "type": 9
+          "type": 10
         },
         "selector": "0xbb6ff6a5"
       }
@@ -272,6 +300,15 @@
             }
           },
           "name": "draw_countdown"
+        },
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0200000002000000000000000000000000000000000000000000000000000000",
+              "ty": 6
+            }
+          },
+          "name": "balance"
         }
       ]
     }
@@ -318,14 +355,19 @@
     },
     {
       "def": {
+        "primitive": "u128"
+      }
+    },
+    {
+      "def": {
         "primitive": "bool"
       }
     },
     {
       "def": {
         "tuple": [
-          8,
-          8
+          9,
+          9
         ]
       }
     },

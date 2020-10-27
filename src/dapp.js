@@ -15,7 +15,7 @@ import regeneratorRuntime from "regenerator-runtime";
 const abi = require("../contract-files/metadata.json");
 const contractAddressJSON = require("../contract-files/contract-address.json");
 const contractAddress = contractAddressJSON.address;
-const gasLimit = 3000n * 10000000n;
+const gasLimit = 100000n * 10000000n;
 
 async function connect() {
   const api = await ApiPromise.create({
@@ -51,7 +51,7 @@ async function enterRaffle(api, value) {
   const unsub = await contract.tx
     .enterRaffle(value, gasLimit)
     .signAndSend(account.address, { signer: injector.signer }, (result) => {
-      unsubContract(unsub, result);
+      unsubContract(api, unsub, result);
     });
 }
 
@@ -65,7 +65,7 @@ async function draw(api) {
   const unsub = await contract.tx
     .draw(0, gasLimit)
     .signAndSend(account.address, { signer: injector.signer }, (result) => {
-      unsubContract(unsub, result);
+      unsubContract(api, unsub, result);
     });
 }
 
@@ -151,6 +151,8 @@ async function numEntriesSubscription(api, setFunction) {
 
   const address = await getInjectedAccount().address;
 
+  const injectedAccount = await getInjectedAccount();
+
   let currentEntries = null;
 
   const unsub = api.query.contracts.contractInfoOf(contractAddress, async (_) => {
@@ -175,7 +177,7 @@ async function numWinners(api) {
   return callValue.output.toHuman();
 }
 
-function unsubContract(unsub, { status, dispatchError }) {
+function unsubContract(api, unsub, { status, dispatchError }) {
   if (dispatchError) {
     if (dispatchError.isModule) {
 
