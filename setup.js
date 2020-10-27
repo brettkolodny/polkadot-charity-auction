@@ -3,8 +3,14 @@ const { CodePromise } = require("@polkadot/api-contract");
 const { Keyring } = require("@polkadot/keyring");
 const fs = require("fs");
 
+let writeToFile = true;
+
 async function main() {
     const api = await connect();
+
+    if (process.argv.length == 3 && process.argv[2] == "--no-write") {
+        writeToFile = false;
+    }
 
     const wasm = "0x" + fs.readFileSync("./contract-files/charity_contract.wasm", "hex");
     const abi = JSON.parse(fs.readFileSync("./contract-files/metadata.json"));
@@ -94,8 +100,12 @@ async function initiateContract(api, blueprint, pair) {
                 if (status.isInBlock || status.isFinalized) {
                     unsub();
                     let contractAddress = { address: contract.address.toHuman() };
-                    fs.writeFileSync("./contract-files/contract-address.json", JSON.stringify(contractAddress), { "flag": "w"});
-                    console.log("Contract address written to file!");
+                    if (writeToFile) {
+                        fs.writeFileSync("./contract-files/contract-address.json", JSON.stringify(contractAddress), { "flag": "w"});
+                        console.log("Contract address written to file!");
+                    } else {
+                        console.log("Navigate to: https://charity-raffle-challenge.netlify.app");
+                    }
     
                     process.exit();
                 } else if (isError) {
