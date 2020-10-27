@@ -33,8 +33,6 @@ let make = (~api: DApp.Api.t) => {
             };
         });
 
-        Js.log(countdown);
-
         None;
     }, [||]);
     

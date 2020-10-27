@@ -11,8 +11,6 @@ let make = (~api: DApp.Api.t) => {
     | Some([|winner1, winner2|]) => {
             {
                 if (winner1 != "null" && winner2 != "null") {
-                    Js.log(winner1);
-                    Js.log(winner2);
                     <div id="winners">
                         {React.string("Winners: Raffle Over!")}
                         <div id="winners-identicons">
@@ -21,7 +19,6 @@ let make = (~api: DApp.Api.t) => {
                         </div>
                     </div>
                 } else if (winner1 != "null") {
-                    Js.log("ran2");
                     <div id="winners">
                         {React.string("Winners:")}
                         <div id="winners-identicons">

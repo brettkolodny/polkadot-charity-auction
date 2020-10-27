@@ -6,9 +6,10 @@
     "re:start": "bsb -make-world -w -ws _ ",
     "re:clean": "bsb -clean-world",
     "server": "parcel serve index.html",
-    "build": "yarn re:build; parcel build index.html --public-url ./",
+    "build": "yarn re:build; parcel build index.html --public-url ./ --no-minify",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "setup": "canvas --dev --tmp &>/dev/null & node ./setup.js; yarn re:build; yarn server"
+    "setup-local": "canvas --dev --tmp &>/dev/null & node ./setup.js; yarn re:build; yarn server",
+    "setup": "canvas --dev --tmp &>/dev/null & node ./setup.js"
   },
   "keywords": [
     "BuckleScript",
